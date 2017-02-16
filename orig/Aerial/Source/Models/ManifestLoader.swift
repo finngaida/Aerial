@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ScreenSaver
 
 typealias manifestLoadCallback = ([AerialVideo]) -> (Void)
 
@@ -34,7 +33,7 @@ class ManifestLoader {
             let inRotation = preferences.videoIsInRotation(videoID: video.id)
             
             if !inRotation {
-                debugLog("video is disabled: \(video)")
+//                debugLog("video is disabled: \(video)")
                 continue
             }
             
@@ -86,7 +85,7 @@ class ManifestLoader {
     
     func loadSavedManifest() {
         guard let savedJSON = preferences.manifest else {
-            debugLog("Couldn't find saved manifest")
+//            debugLog("Couldn't find saved manifest")
             return
         }
         

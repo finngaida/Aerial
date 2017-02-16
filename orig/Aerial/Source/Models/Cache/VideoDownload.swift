@@ -65,7 +65,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
             // set Range: bytes=startOffset-endOffset
             let requestRangeField = "bytes=\(requestedRange.location)-\(requestedRange.location+requestedRange.length)"
             request.setValue(requestRangeField, forHTTPHeaderField: "Range")
-            debugLog("Starting download for range \(requestRangeField)")
+            //debugLog("Starting download for range \(requestRangeField)")
         }
         
         guard let connection = NSURLConnection(request: request as URLRequest,
@@ -77,7 +77,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
         let stream = VideoDownloadStream(connection: connection)
         
         if chunk == nil {
-            debugLog("Starting download for content information")
+            //debugLog("Starting download for content information")
             stream.contentInformationRequest = true
         }
         
@@ -108,7 +108,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
         let streamCount = 4
         let pace = 0.2; // pace stream creation a little bit
         let streamPiece = Int(floor(Double(contentLength) / Double(streamCount)))
-        debugLog("Starting \(streamCount) streams with \(streamPiece) each, for content length of \(contentLength)")
+        //debugLog("Starting \(streamCount) streams with \(streamPiece) each, for content length of \(contentLength)")
         var offset = 0
         
         var delayTime: Double = 0
@@ -121,7 +121,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
             if isLastStream {
                 let bytesLeft = contentLength - offset
                 range = NSRange(location: offset, length: bytesLeft)
-                debugLog("last stream range: \(range)")
+                //debugLog("last stream range: \(range)")
             }
 
             let delay = DispatchTime.now() + Double(Int64(delayTime * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
@@ -236,7 +236,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
     
     func connectionDidFinishLoading(_ connection: NSURLConnection) {
         queue.async { () -> Void in
-            debugLog("connectionDidFinishLoading")
+            //debugLog("connectionDidFinishLoading")
             
             guard let stream = self.streamForConnection(connection) else {
                 NSLog("Aerial Error: No matching stream for connection: \(connection)")
@@ -251,7 +251,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
             self.streams.remove(at: index)
             
             if self.streams.count == 0 {
-                debugLog("Finished downloading!")
+                //debugLog("Finished downloading!")
                 self.finishedDownload()
             }
         }
@@ -287,14 +287,14 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
         let httpResponse = response as! HTTPURLResponse
         
         guard let contentRange = httpResponse.allHeaderFields["Content-Range"] as? NSString else {
-            debugLog("Weird, no byte response: \(response)")
+            //debugLog("Weird, no byte response: \(response)")
             return nil
         }
         
         guard let match = regex.firstMatch(in: contentRange as String,
                                            options: NSRegularExpression.MatchingOptions.anchored,
                                            range: NSRange(location:0, length: contentRange.length)) else {
-            debugLog("Weird, couldn't make a regex match for byte offset: \(contentRange)")
+            //debugLog("Weird, couldn't make a regex match for byte offset: \(contentRange)")
             return nil
         }
         let offsetMatchRange = match.rangeAt(1)
@@ -302,7 +302,7 @@ class VideoDownload: NSObject, NSURLConnectionDataDelegate {
         
         let offset = offsetString.longLongValue
         
-//        debugLog("content range: \(contentRange), start offset: \(offset)")
+//        //debugLog("content range: \(contentRange), start offset: \(offset)")
         
         return Int(offset)
     }

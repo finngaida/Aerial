@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ScreenSaver
 
 class Preferences {
     
@@ -25,12 +24,12 @@ class Preferences {
     lazy var userDefaults: UserDefaults = {
         let module = "com.JohnCoates.Aerial"
         
-        guard let userDefaults = ScreenSaverDefaults(forModuleWithName: module) else {
+//        guard let userDefaults = ScreenSaverDefaults(forModuleWithName: module) else {
             print("Couldn't create ScreenSaverDefaults, creating generic UserDefaults")
             return UserDefaults()
-        }
+//        }
         
-        return userDefaults
+//        return userDefaults
     }()
     
     // MARK: - Setup
