@@ -87,6 +87,12 @@ class ViewController: UIViewController {
         ManifestLoader.instance.addCallback { videos in
             self.playNextVideo()
         }
+        
+        UIApplication.shared.setStatusBarHidden(true, with: UIStatusBarAnimation.fade)
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        get { return true }
     }
     
     // MARK: - AVPlayerItem Notifications
